@@ -8,19 +8,22 @@ library(tictoc)
 library(conflicted)
 library(plotly)
 library(jsonlite)
+library(reshape2)
 wd<-getwd()
 BeginDate<-as.POSIXct('2023-07-01 00:00', tz = 'America/New_York')
-EndDate<-as.POSIXct('2023-08-04 23:59', tz = 'America/New_York')
+EndDate<-as.POSIXct('2023-08-05 23:59', tz = 'America/New_York')
 
 tic("Read in data and coerce.")
-FitBitZip<-grep("takeout", list.files(file.path(wd,"FitBit")), value=TRUE)
-FitBitZipPath<-file.path(wd,"FitBit",FitBitZip)
+
 ##Read in manual blood pressure and heart rate data.##
 
 BPData<-read_xlsx("BloodPressureDevice.xlsx")
+BPDataMelt<-melt(BPData, id.vars="DateTimeGroup")
 
 
 ##Handle FitBit Data.##
+FitBitZip<-grep("takeout", list.files(file.path(wd,"FitBit")), value=TRUE)
+FitBitZipPath<-file.path(wd,"FitBit",FitBitZip)
 zipped_heart_rate <- grep(paste0("Takeout/","FitBit/","Global Export Data/",'heart_rate.'), unzip(file.path(wd,"FitBit",FitBitZip), list=TRUE)$Name, 
                          ignore.case=TRUE, value=TRUE)
 unzip(FitBitZipPath, files=zipped_heart_rate, exdir = file.path(wd, "FitBit","FitBitHeartRate"), overwrite = TRUE)
@@ -48,12 +51,26 @@ toc()
 
 
 tic("Plotting")
+
+##Manual Blood Pressure Data.#
+
+BPPlot<-ggplot(BPDataMelt,aes(x = DateTimeGroup, y = value, color = variable)) + 
+  geom_point()+
+  labs(x="Date and Time (Local)", y="Value (mmHG or BPM)", title = "Manual Blood Pressure Data")+
+  theme(plot.title = element_text(hjust = 0.5))+ 
+  labs(color='Vital Sign') 
+BPPlot
+
+BPPlot<-ggplotly(BPPlot)
+BPPlot
+##FitBit Heart Rate Plot.##
 HeartRatePlot<-ggplot(HeartRateDF, aes(x=dateTime, y=value.bpm))+
   geom_point(size = 1, color = "orange2", alpha = 0.5) +
   geom_smooth(method = 'gam', formula = y ~ s(x, k = 10, bs = "cs"),
               fill = "orange", color = "orange4", linetype = 2)+
   labs(x="Date and Time (Local)", y="Heartbeats Per Minute", title = "FitBit Heartbeat Data")+
   theme(plot.title = element_text(hjust = 0.5))
+  
 
 HeartRatePlot
 
