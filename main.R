@@ -46,7 +46,7 @@ HeartRatePlot<-ggplot(HeartRateDF, aes(x=dateTime, y=value.bpm))+
   geom_smooth(method = 'gam', formula = y ~ s(x, k = 10, bs = "cs"),
               fill = "orange", color = "orange4", linetype = 2)
 
-
+HeartRatePlot
 
 HeartRatePlot<-ggplotly(HeartRatePlot)
 HeartRatePlot
