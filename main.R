@@ -33,7 +33,11 @@ for(i in 1:length(HeartRateList)){
   }
   
 }
-
+##Filtering based on research that higher confidence values are better. 0 and 1##
+##may be unreliable.##
+##https://towardsdatascience.com/when-your-fitbit-says-your-heart-is-exploding-should-you-care-4e47aa5bf452##
+HeartRateDF<-dplyr::filter(HeartRateDF, value.confidence==2|value.confidence==3)
+##Coercing DTG to POSIXct, then changing the value to local time, then back to POSIXct##
 HeartRateDF$dateTime<-as.POSIXct(HeartRateDF$dateTime, format="%m/%d/%y %H:%M:%S", tz="UTC")
 HeartRateDF$dateTime<-format(HeartRateDF$dateTime,tz="America/New_York", usetz = TRUE)
 HeartRateDF$dateTime<-as.POSIXct(HeartRateDF$dateTime, tz="America/New_York")
