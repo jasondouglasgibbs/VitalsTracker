@@ -51,7 +51,9 @@ tic("Plotting")
 HeartRatePlot<-ggplot(HeartRateDF, aes(x=dateTime, y=value.bpm))+
   geom_point(size = 1, color = "orange2", alpha = 0.5) +
   geom_smooth(method = 'gam', formula = y ~ s(x, k = 10, bs = "cs"),
-              fill = "orange", color = "orange4", linetype = 2)
+              fill = "orange", color = "orange4", linetype = 2)+
+  labs(x="Date and Time (Local)", y="Heartbeats Per Minute", title = "FitBit Heartbeat Data")+
+  theme(plot.title = element_text(hjust = 0.5))
 
 HeartRatePlot
 
