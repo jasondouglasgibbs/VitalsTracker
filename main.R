@@ -9,6 +9,8 @@ library(conflicted)
 library(plotly)
 library(jsonlite)
 wd<-getwd()
+BeginDate<-as.POSIXct('2023-07-01 00:00', tz = 'America/New_York')
+EndDate<-as.POSIXct('2023-08-04 23:59', tz = 'America/New_York')
 
 tic("Read in data and coerce.")
 FitBitZip<-grep("takeout", list.files(file.path(wd,"FitBit")), value=TRUE)
@@ -41,12 +43,13 @@ HeartRateDF<-dplyr::filter(HeartRateDF, value.confidence==2|value.confidence==3)
 HeartRateDF$dateTime<-as.POSIXct(HeartRateDF$dateTime, format="%m/%d/%y %H:%M:%S", tz="UTC")
 HeartRateDF$dateTime<-format(HeartRateDF$dateTime,tz="America/New_York", usetz = TRUE)
 HeartRateDF$dateTime<-as.POSIXct(HeartRateDF$dateTime, tz="America/New_York")
+HeartRateDF<-dplyr::filter(HeartRateDF,dateTime>=BeginDate&dateTime<=EndDate)
 toc()
 
 
 tic("Plotting")
 HeartRatePlot<-ggplot(HeartRateDF, aes(x=dateTime, y=value.bpm))+
-  geom_point(size = 0.1, color = "orange2", alpha = 0.5) +
+  geom_point(size = 1, color = "orange2", alpha = 0.5) +
   geom_smooth(method = 'gam', formula = y ~ s(x, k = 10, bs = "cs"),
               fill = "orange", color = "orange4", linetype = 2)
 
