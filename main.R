@@ -8,7 +8,6 @@ library(tictoc)
 library(conflicted)
 library(plotly)
 library(jsonlite)
-library(TAF)
 wd<-getwd()
 
 tic("Read in data and coerce.")
@@ -51,3 +50,4 @@ HeartRatePlot<-ggplot(HeartRateDF, aes(x=dateTime, y=value.bpm))+
 
 HeartRatePlot<-ggplotly(HeartRatePlot)
 HeartRatePlot
+toc()
