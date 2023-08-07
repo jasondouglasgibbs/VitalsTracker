@@ -9,9 +9,10 @@ library(conflicted)
 library(plotly)
 library(jsonlite)
 library(reshape2)
+library(ggtext)
 wd<-getwd()
-BeginDate<-as.POSIXct('2023-07-01 00:00', tz = 'America/New_York')
-EndDate<-as.POSIXct('2023-08-05 23:59', tz = 'America/New_York')
+BeginDate<-as.POSIXct('2023-08-04 00:01', tz = 'America/New_York')
+EndDate<-as.POSIXct(Sys.time(), tz = 'America/New_York')
 
 tic("Read in data and coerce.")
 
@@ -56,13 +57,20 @@ tic("Plotting")
 
 BPPlot<-ggplot(BPDataMelt,aes(x = DateTimeGroup, y = value, color = variable)) + 
   geom_point()+
-  labs(x="Date and Time (Local)", y="Value (mmHG or BPM)", title = "Manual Blood Pressure Data")+
+  labs(x="Date and Time (Local)", y=expression(Value *" "* (mmHG*", " * BPM *", "* or * " %" * SpO[2])), title = "Manual Vitals Data")+
   theme(plot.title = element_text(hjust = 0.5))+ 
-  labs(color='Vital Sign') 
+  labs(color='Vital Sign')
 BPPlot
 
-BPPlot<-ggplotly(BPPlot)
-BPPlot
+BPPlotly<-ggplot(BPDataMelt,aes(x = DateTimeGroup, y = value, color = variable)) + 
+  geom_point()+
+  labs(x="Date and Time (Local)", y="Value (mmHG, BPM, or %SPO2)", title = "Manual Vitals Data")+
+  theme(plot.title = element_text(hjust = 0.5))+ 
+  labs(color='Vital Sign')
+
+BPPlotly<-ggplotly(BPPlotly)
+BPPlotly
+
 ##FitBit Heart Rate Plot.##
 HeartRatePlot<-ggplot(HeartRateDF, aes(x=dateTime, y=value.bpm))+
   geom_point(size = 1, color = "orange2", alpha = 0.5) +
