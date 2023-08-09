@@ -1,13 +1,13 @@
 ---
 title: "My Vitals Overview"
-author: "Jason Gibbs"
+author: "Jason G"
 format: html
 editor: visual
 ---
 
-## Vitals Data for Jason Gibbs
+## Vitals Data
 
-The below graphs display vitals data for me taken either from manual measurements (blood pressure, pulse oximeter) or FitBit data.
+The below graphs display vitals data taken either from manual measurements (blood pressure, pulse oximeter) or FitBit data.
 
 ```{r}
 #| echo: false
@@ -84,8 +84,8 @@ BPPlotly<-ggplot(BPDataMelt,aes(x = DateTimeGroup, y = value, color = variable))
   theme(plot.title = element_text(hjust = 0.5))+ 
   labs(color='Vital Sign')
 
-BPPlotly<-ggplotly(BPPlotly)
-BPPlotly
+#BPPlotly<-ggplotly(BPPlotly)
+#BPPlotly
 
 ##FitBit Heart Rate Plot.##
 HeartRatePlot<-ggplot(HeartRateDF, aes(x=dateTime, y=value.bpm))+
@@ -98,6 +98,6 @@ HeartRatePlot<-ggplot(HeartRateDF, aes(x=dateTime, y=value.bpm))+
 
 HeartRatePlot
 
-HeartRatePlot<-ggplotly(HeartRatePlot)
-HeartRatePlot
+#HeartRatePlot<-ggplotly(HeartRatePlot)
+#HeartRatePlot
 ```
