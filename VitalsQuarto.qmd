@@ -84,8 +84,6 @@ BPPlotly<-ggplot(BPDataMelt,aes(x = DateTimeGroup, y = value, color = variable))
   theme(plot.title = element_text(hjust = 0.5))+ 
   labs(color='Vital Sign')
 
-#BPPlotly<-ggplotly(BPPlotly)
-#BPPlotly
 
 ##FitBit Heart Rate Plot.##
 HeartRatePlot<-ggplot(HeartRateDF, aes(x=dateTime, y=value.bpm))+
@@ -97,7 +95,16 @@ HeartRatePlot<-ggplot(HeartRateDF, aes(x=dateTime, y=value.bpm))+
   
 
 HeartRatePlot
+```
 
-#HeartRatePlot<-ggplotly(HeartRatePlot)
-#HeartRatePlot
+```{r}
+#| echo: false
+BPPlotly<-ggplotly(BPPlotly)
+BPPlotly
+```
+
+```{r}
+#| echo: false
+HeartRatePlotly<-ggplotly(HeartRatePlot)
+HeartRatePlotly
 ```
