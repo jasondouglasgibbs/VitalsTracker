@@ -58,7 +58,7 @@ tic("Plotting")
 
 BPPlot<-ggplot(BPDataMelt,aes(x = DateTimeGroup, y = value, color = variable)) + 
   geom_point()+
-  labs(x="Date and Time (Local)", y=expression(Value *" "* (mmHG*", " * BPM *", "* or * " %" * SpO[2])), title = "Manual Vitals Data")+
+  labs(x="Date and Time (Local)", y=expression(Value *" "* (mmHG*", " * BPM *", "* or * " %" * SpO[2])), title = "Manual Vitals Data (Last Five Days)")+
   theme(plot.title = element_text(hjust = 0.5))+ 
   labs(color='Vital Sign')
 BPPlot
