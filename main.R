@@ -10,8 +10,9 @@ library(plotly)
 library(jsonlite)
 library(reshape2)
 library(ggtext)
+library(lubridate)
 wd<-getwd()
-BeginDate<-as.POSIXct('2023-08-04 00:01', tz = 'America/New_York')
+BeginDate<-as.POSIXct(Sys.time()-days(5), tz = 'America/New_York')
 EndDate<-as.POSIXct(Sys.time(), tz = 'America/New_York')
 
 tic("Read in data and coerce.")
@@ -64,7 +65,7 @@ BPPlot
 
 BPPlotly<-ggplot(BPDataMelt,aes(x = DateTimeGroup, y = value, color = variable)) + 
   geom_point()+
-  labs(x="Date and Time (Local)", y="Value (mmHG, BPM, or %SPO2)", title = "Manual Vitals Data")+
+  labs(x="Date and Time (Local)", y="Value (mmHG, BPM, or %SPO2)", title = "Manual Vitals Data (Last Five Days)")+
   theme(plot.title = element_text(hjust = 0.5))+ 
   labs(color='Vital Sign')
 
@@ -76,7 +77,7 @@ HeartRatePlot<-ggplot(HeartRateDF, aes(x=dateTime, y=value.bpm))+
   geom_point(size = 1, color = "orange2", alpha = 0.5) +
   geom_smooth(method = 'gam', formula = y ~ s(x, k = 10, bs = "cs"),
               fill = "orange", color = "orange4", linetype = 2)+
-  labs(x="Date and Time (Local)", y="Heartbeats Per Minute", title = "FitBit Heartbeat Data")+
+  labs(x="Date and Time (Local)", y="Heartbeats Per Minute", title = "FitBit Heartbeat Data (Last Five Days)")+
   theme(plot.title = element_text(hjust = 0.5))
   
 
