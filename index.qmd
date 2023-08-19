@@ -64,6 +64,27 @@ HeartRateDF$dateTime<-as.POSIXct(HeartRateDF$dateTime, format="%m/%d/%y %H:%M:%S
 HeartRateDF$dateTime<-format(HeartRateDF$dateTime,tz="America/New_York", usetz = TRUE)
 HeartRateDF$dateTime<-as.POSIXct(HeartRateDF$dateTime, tz="America/New_York")
 HeartRateDF<-dplyr::filter(HeartRateDF,dateTime>=BeginDate&dateTime<=EndDate)
+
+##Creating a separate DF to create a box plot of non-active heart (<130 BPM)##
+##that spans the entire data set.##
+HeartRateDFBox<-HeartRateDF
+HeartRateDFBox<-dplyr::filter(HeartRateDFBox,value.bpm<=130)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| 
+##Box Plot for FitBit Heart Rate Data.##
+
+HeartRateBoxPlot <- ggplot(HeartRateDFBox, aes(y=value.bpm)) + 
+  geom_boxplot()+ 
+  scale_x_discrete( ) +
+  labs(title = paste0("FitBit Inactive Heart Rate Boxplot (Last Five Days) N= ", nrow(HeartRateDFBox), " Samples"),
+       y = "Heart Rate (BPM)")+
+  theme(plot.title = element_text(hjust = 0.5))
+HeartRateBoxPlot<-ggplotly(HeartRateBoxPlot)
+HeartRateBoxPlot
 ```
 
 ```{r}
@@ -74,7 +95,7 @@ HeartRateDF<-dplyr::filter(HeartRateDF,dateTime>=BeginDate&dateTime<=EndDate)
 
 BPPlot<-ggplot(BPDataMelt,aes(x = DateTimeGroup, y = value, color = variable)) + 
   geom_point()+
-  labs(x="Date and Time (Local)", y=expression(Value *" "* (mmHG*", " * BPM *", "* or * " %" * SpO[2])), title = "Manual Vitals Data (Last Five Days)")+
+  labs(x="Date and Time (Local)", y=expression(Value *" "* (mmHG*", " * BPM *", "* or * " %" * SpO[2])), title = "Manual Vitals Data")+
   theme(plot.title = element_text(hjust = 0.5))+ 
   labs(color='Vital Sign')
 BPPlot
@@ -82,7 +103,7 @@ BPPlot
 
 BPPlotly<-ggplot(BPDataMelt,aes(x = DateTimeGroup, y = value, color = variable)) + 
   geom_point()+
-  labs(x="Date and Time (Local)", y="Value (mmHG, BPM, or %SPO2)", title = "Manual Vitals Data (Last Five Days)")+
+  labs(x="Date and Time (Local)", y="Value (mmHG, BPM, or %SPO2)", title = "Manual Vitals Data")+
   theme(plot.title = element_text(hjust = 0.5))+ 
   labs(color='Vital Sign')
 
