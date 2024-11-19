@@ -12,7 +12,7 @@ library(reshape2)
 library(ggtext)
 library(lubridate)
 wd<-getwd()
-BeginDate<-as.POSIXct(Sys.time()-days(5), tz = 'America/New_York')
+BeginDate<-as.POSIXct(Sys.time()-days(20), tz = 'America/New_York')
 EndDate<-as.POSIXct(Sys.time(), tz = 'America/New_York')
 
 tic("Read in data and coerce.")
